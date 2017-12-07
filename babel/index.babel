@@ -1,0 +1,43 @@
+class MarkdownPreviewer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: 'Heading\n=======\n\nSub-heading\n-----------\n\n### Another deeper heading\n\nParagraphs are separated\nby a blank line.\n\nLeave 2 spaces at the end of a line to do a  \nline break\n\nText attributes *italic*, **bold**,\n`monospace`,~~strikethrough~~ .\n\nShopping list:\n* apples\n* oranges\n* pears\n\nNumbered list:\n1. apples\n2. oranges\n3. pears\n\nThe rain---not the reign---in\nSpain.\n\n *[Stefan Krejovic](https://www.freecodecamp.org/megakreja)*'
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(e) {
+    this.setState({
+      text: e.target.value
+    });
+  }
+  render() {
+    return (
+      <div id="container">
+        <h1 id="title">Markdown Previewer</h1>
+        <div id="previews">
+          <MarkdownInput onChange={this.handleChange} text={this.state.text} />
+          <MarkdownOutput text={this.state.text}/>
+        </div>
+      </div>
+    );
+  }
+}
+
+class MarkdownInput extends React.Component {
+  render() {
+    return (
+      <textarea id="input" rows="40" cols="70" onChange={this.props.onChange}>{this.props.text}</textarea>
+    );
+  }
+}
+
+class MarkdownOutput extends React.Component {
+  render() {
+    return (
+      <div id="output" dangerouslySetInnerHTML={{__html: marked(this.props.text)}}></div>
+    );
+  }
+}
+
+ReactDOM.render(<MarkdownPreviewer />, document.getElementById("app"));
